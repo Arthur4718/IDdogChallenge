@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">IDdog</string>
+    <string name="prompt_email">E-mail</string>
 </resources>
