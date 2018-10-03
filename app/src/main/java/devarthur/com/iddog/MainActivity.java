@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
+import android.support.v7.app.AlertDialog;
 
 import android.widget.Button;
 import android.widget.TextView;
@@ -35,24 +36,39 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String email = userEmailView.getText().toString();
+                checkUserEmail();
 
-                if(TextUtils.isEmpty(email)){
-                    //Todo show a dialog informing the user to add an email.
-                    Log.d("Dog", "Empty email input");
-                }else if(!isEmailValid(email)){
-                    //Todo show a dialog prompting the user to add a valid e-mail
-                    Log.d("Dog", "Invalid email string");
-
-                }else{
-                    //Todo call the POST method for the api
-                    Log.d("Dog", "Email valid");
-                }
 
             }
         });
 
 
+
+    }
+
+    private void checkUserEmail(){
+        String email = userEmailView.getText().toString();
+
+        if(TextUtils.isEmpty(email)){
+            
+            Log.d("Dog", "Empty email input");
+            showErrorDialog("Please type your e-mail");
+        }else if(!isEmailValid(email)){
+
+            Log.d("Dog", "Invalid email string");
+            showErrorDialog("Your email address is not valid");
+
+        }else{
+            //Todo call the POST method for the api
+            Log.d("Dog", "Email valid");
+
+            attemptLogin();
+        }
+
+
+    }
+
+    private void attemptLogin(){
 
     }
 
@@ -65,4 +81,17 @@ public class MainActivity extends AppCompatActivity {
 
 
     //TODO if the POST is successful, store the token locally.
+
+    //Show a simple alert if something went wrong with the connnection to firebase.
+    private void showErrorDialog(String message){
+
+        new AlertDialog.Builder(this)
+                .setTitle("Error")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+
+    }
+
 }
