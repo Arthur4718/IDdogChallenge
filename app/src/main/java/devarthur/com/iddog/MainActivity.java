@@ -4,13 +4,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.support.v7.app.AlertDialog;
+import com.loopj.android.http.*;
 
 import android.widget.Button;
-import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import cz.msebera.android.httpclient.Header;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         String email = userEmailView.getText().toString();
 
         if(TextUtils.isEmpty(email)){
-            
+
             Log.d("Dog", "Empty email input");
             showErrorDialog("Please type your e-mail");
         }else if(!isEmailValid(email)){
@@ -62,13 +66,48 @@ public class MainActivity extends AppCompatActivity {
             //Todo call the POST method for the api
             Log.d("Dog", "Email valid");
 
-            attemptLogin();
+            //attempPost();
+
         }
 
 
     }
 
-    private void attemptLogin(){
+    private void attempPost() {
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+
+        String url = "https://api-iddog.idwall.co/signup";
+        String userEmail = userEmailView.getText().toString();
+
+        JSONObject jsonEmail = new JSONObject();
+        try {
+            jsonEmail.put("email", userEmail);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d("Dog", " " + jsonEmail.toString());
+
+
+        params.put("-d", jsonEmail);
+        params.put("Content-Type", "application/json");
+        client.post(url, params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.d("Dog", "onSucess" + responseBody.toString());
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                Log.e("Dog", "" + error.toString());
+                Log.e("Dog", "status code " + String.valueOf(statusCode));
+
+            }
+        });
 
     }
 
