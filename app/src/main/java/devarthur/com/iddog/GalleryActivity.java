@@ -3,7 +3,7 @@ package devarthur.com.iddog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class gallery extends AppCompatActivity {
+public class GalleryActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

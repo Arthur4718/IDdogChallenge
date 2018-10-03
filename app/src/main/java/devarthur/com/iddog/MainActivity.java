@@ -5,16 +5,19 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.content.Intent;
 import android.widget.AutoCompleteTextView;
 import android.support.v7.app.AlertDialog;
 import com.loopj.android.http.*;
-
+import cz.msebera.android.httpclient.Header;
 import android.widget.Button;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import cz.msebera.android.httpclient.Header;
+
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -66,7 +69,11 @@ public class MainActivity extends AppCompatActivity {
             //Todo call the POST method for the api
             Log.d("Dog", "Email valid");
 
-            //attempPost();
+           // attempPost();
+
+            Intent openGallery = new Intent(getApplicationContext(), GalleryActivity.class);
+            startActivity(openGallery);
+
 
         }
 
@@ -77,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
+        client.addHeader("Content-Type", "application/json");
 
         String url = "https://api-iddog.idwall.co/signup";
         String userEmail = userEmailView.getText().toString();
@@ -92,7 +100,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         params.put("-d", jsonEmail);
-        params.put("Content-Type", "application/json");
+        client.removeAllHeaders();
+        client.addHeader("Content-Type", "application/json");
+
         client.post(url, params, new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
@@ -108,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
 
     }
 
