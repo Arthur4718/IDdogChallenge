@@ -5,25 +5,17 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.content.Intent;
 import android.widget.AutoCompleteTextView;
 import android.support.v7.app.AlertDialog;
 import com.loopj.android.http.*;
 import cz.msebera.android.httpclient.Header;
 import android.widget.Button;
+import android.content.SharedPreferences;
 
-import cz.msebera.android.httpclient.HttpEntity;
-import cz.msebera.android.httpclient.HttpResponse;
-import cz.msebera.android.httpclient.client.ClientProtocolException;
-import cz.msebera.android.httpclient.client.ResponseHandler;
+
 import cz.msebera.android.httpclient.entity.*;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
 
     //Constants
     //Todo add any contast like api url , token and etc around here
+    private static final String API_URL = "https://api-iddog.idwall.co/signup";
+    public static final String APP_PREFS = "ChatPrefs";
+    public static final String TOKEN_KEY = "token";
 
 
     @Override
@@ -92,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
 
-
-        String url = "https://api-iddog.idwall.co/signup";
         String userEmail = userEmailView.getText().toString();
 
         JSONObject jsonParams = new JSONObject();
@@ -108,30 +101,34 @@ public class MainActivity extends AppCompatActivity {
         ByteArrayEntity be = new ByteArrayEntity(jsonParams.toString().getBytes());
 
 
-        client.post(getApplicationContext(), url, be, "application/json", new AsyncHttpResponseHandler() {
+        //TODO create a class to handle JSON post, getmethods and parse token value
+        client.post(getApplicationContext(), API_URL, be, "application/json", new JsonHttpResponseHandler() {
+
+
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.d("Dog", "onSucess" + responseBody.toString());
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                Log.d("Dog", "onSucess " + response.toString());
                 Log.d("Dog", "status code " + String.valueOf(statusCode));
-
-                //TODO if the POST is successful, store the token locally. Shared prefereences
-
-                //TODO open the next screen
-
-
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.e("Dog", "" + error.toString());
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("Dog", "" + errorResponse.toString());
                 Log.e("Dog", "status code " + String.valueOf(statusCode));
             }
+
+
         });
 
     }
 
-    private void storeToken(byte token){
+    private void storeToken(String data){
+
         
+
+
     }
 
     private boolean isEmailValid(String email){
