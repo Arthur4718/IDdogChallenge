@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
         JSONObject jsonParams = new JSONObject();
         try {
-            jsonParams.put("email", "your@email.com");
+            jsonParams.put("email", userEmail);
         } catch (JSONException e) {
             e.printStackTrace();
 
@@ -107,12 +107,17 @@ public class MainActivity extends AppCompatActivity {
 
         ByteArrayEntity be = new ByteArrayEntity(jsonParams.toString().getBytes());
 
-        //StringEntity entity = new StringEntity(jsonParams.toString());
 
         client.post(getApplicationContext(), url, be, "application/json", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.d("Dog", "onSucess" + responseBody.toString());
+                Log.d("Dog", "status code " + String.valueOf(statusCode));
+
+                //TODO if the POST is successful, store the token locally. Shared prefereences
+
+                //TODO open the next screen
+
 
             }
 
@@ -123,9 +128,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
     }
 
     private boolean isEmailValid(String email){
@@ -133,10 +135,8 @@ public class MainActivity extends AppCompatActivity {
         return email.contains("@");
     }
 
-    //TODO create a method to POST user email into the API
 
 
-    //TODO if the POST is successful, store the token locally.
 
     //Show a simple alert if something went wrong with the connnection to firebase.
     private void showErrorDialog(String message){
