@@ -4,15 +4,63 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
+    android:background="@android:color/white"
+    tools:context=".MainActivity"
+    tools:layout_editor_absoluteY="25dp">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar">
+
+
+    </include>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textInputLayout"
+        android:layout_width="395dp"
+        android:layout_height="82dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:textColorHint="@color/statusBarColor"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/include"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/include">
+
+        <AutoCompleteTextView
+            android:id="@+id/register_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/prompt_email"
+            android:imeOptions="actionUnspecified"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:textColor="@color/statusBarColor"
+            android:textColorHint="@color/statusBarColor"
+            android:textIsSelectable="false"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/signInButton"
+        style="?android:textAppearanceMedium"
+        android:layout_width="395dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_border"
+        android:text="@string/prompt_signIn"
+        android:textColor="@color/statusColor"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
 
 </android.support.constraint.ConstraintLayout>
