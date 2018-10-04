@@ -12,11 +12,18 @@ import com.loopj.android.http.*;
 import cz.msebera.android.httpclient.Header;
 import android.widget.Button;
 
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.HttpResponse;
+import cz.msebera.android.httpclient.client.ClientProtocolException;
+import cz.msebera.android.httpclient.client.ResponseHandler;
+import cz.msebera.android.httpclient.entity.*;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-
-
+import java.io.InputStream;
+import java.io.ByteArrayInputStream;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
+import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -66,13 +73,13 @@ public class MainActivity extends AppCompatActivity {
             showErrorDialog("Your email address is not valid");
 
         }else{
-            //Todo call the POST method for the api
+
             Log.d("Dog", "Email valid");
 
-           // attempPost();
+            attempPost();
 
-            Intent openGallery = new Intent(getApplicationContext(), GalleryActivity.class);
-            startActivity(openGallery);
+            //Intent openGallery = new Intent(getApplicationContext(), GalleryActivity.class);
+            //startActivity(openGallery);
 
 
         }
@@ -84,26 +91,25 @@ public class MainActivity extends AppCompatActivity {
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        client.addHeader("Content-Type", "application/json");
+
 
         String url = "https://api-iddog.idwall.co/signup";
         String userEmail = userEmailView.getText().toString();
 
-        JSONObject jsonEmail = new JSONObject();
+        JSONObject jsonParams = new JSONObject();
         try {
-            jsonEmail.put("email", userEmail);
-
+            jsonParams.put("email", "your@email.com");
         } catch (JSONException e) {
             e.printStackTrace();
+
+
         }
-        Log.d("Dog", " " + jsonEmail.toString());
 
+        ByteArrayEntity be = new ByteArrayEntity(jsonParams.toString().getBytes());
 
-        params.put("-d", jsonEmail);
-        client.removeAllHeaders();
-        client.addHeader("Content-Type", "application/json");
+        //StringEntity entity = new StringEntity(jsonParams.toString());
 
-        client.post(url, params, new AsyncHttpResponseHandler() {
+        client.post(getApplicationContext(), url, be, "application/json", new AsyncHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
                 Log.d("Dog", "onSucess" + responseBody.toString());
@@ -112,12 +118,11 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
                 Log.e("Dog", "" + error.toString());
                 Log.e("Dog", "status code " + String.valueOf(statusCode));
-
             }
         });
+
 
 
 
