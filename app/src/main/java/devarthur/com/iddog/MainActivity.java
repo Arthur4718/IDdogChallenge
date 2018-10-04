@@ -130,6 +130,10 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void storeToken(byte token){
+        
+    }
+
     private boolean isEmailValid(String email){
 
         return email.contains("@");
