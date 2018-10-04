@@ -6,42 +6,29 @@
     android:layout_height="match_parent"
 
     android:background="@android:color/white"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    tools:layout_editor_absoluteY="25dp">
+
+    <include
+        android:id="@+id/include"
+        layout="@layout/toolbar">
 
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-
-        android:background="@color/statusBarColor">
-
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="165dp"
-            android:layout_height="66dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="@string/app_name"
-            app:srcCompat="@drawable/logo" />
-    </RelativeLayout>
+    </include>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/textInputLayout"
-        android:layout_width="0dp"
+        android:layout_width="395dp"
         android:layout_height="82dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:textColorHint="@color/statusBarColor"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/include"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+        app:layout_constraintTop_toTopOf="@+id/include">
 
         <AutoCompleteTextView
             android:id="@+id/register_email"
@@ -61,16 +48,16 @@
 
     <Button
         android:id="@+id/signInButton"
-        android:layout_width="0dp"
         style="?android:textAppearanceMedium"
-        android:background="@drawable/button_border"
-        android:textColor="@color/statusColor"
+        android:layout_width="395dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:textStyle="bold"
+        android:background="@drawable/button_border"
         android:text="@string/prompt_signIn"
+        android:textColor="@color/statusColor"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />

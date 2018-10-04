@@ -6,4 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".GalleryActivity">
 
+    <include layout="@layout/toolbar">
+
+
+    </include>
+
 </android.support.constraint.ConstraintLayout>
