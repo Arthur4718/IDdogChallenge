@@ -58,7 +58,7 @@ public class ListActivity extends AppCompatActivity
         TextView displayUserEmail = (TextView) headerView.findViewById(R.id.userEmailTextView);
         displayUserEmail.setText(restoreEmail());
 
-        getDataFromNetWork();
+
     }
 
     private String restoreToken() {
@@ -74,14 +74,14 @@ public class ListActivity extends AppCompatActivity
     }
 
 
-    private void getDataFromNetWork() {
+    private void getDataFromNetWork(String dogCategory) {
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
 
         client.addHeader("Content-Type", "application/json");
         client.addHeader("Authorization", restoreToken());
-        params.put("category", "hound");
+        params.put("category", dogCategory);
 
         client.get(FEED_URL,params, new JsonHttpResponseHandler() {
             @Override
@@ -148,16 +148,19 @@ public class ListActivity extends AppCompatActivity
         if (id == R.id.nav_husky)
         {
             //TODO create a method to querry for each category and send the images to Recycler View Adapter
-
-        } else if (id == R.id.nav_hound)
+            getDataFromNetWork("husky");
+        }
+        else if (id == R.id.nav_hound)
         {
-
-        } else if (id == R.id.nav_pug)
+            getDataFromNetWork("hound");
+        }
+        else if (id == R.id.nav_pug)
         {
-
-        } else if (id == R.id.nav_labrador)
+            getDataFromNetWork("pug");
+        }
+        else if (id == R.id.nav_labrador)
         {
-
+            getDataFromNetWork("husky");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
