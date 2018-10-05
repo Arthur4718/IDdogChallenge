@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -31,6 +32,7 @@ public class ListActivity extends AppCompatActivity
     //MemberVariables
     private String userToken;
     private Button mButton;
+    private TextView displayUserEmail;
 
     //Constants
     private static final String FEED_URL = "https://api-iddog.idwall.co/feed";
@@ -51,6 +53,10 @@ public class ListActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerView = navigationView.getHeaderView(0);
+
+        TextView displayUserEmail = (TextView) headerView.findViewById(R.id.userEmailTextView);
+        displayUserEmail.setText(restoreEmail());
 
         getDataFromNetWork();
     }
@@ -60,6 +66,12 @@ public class ListActivity extends AppCompatActivity
         return userToken = prefs.getString(MainActivity.TOKEN_KEY,null);
     }
 
+    private String restoreEmail()
+    {
+
+        SharedPreferences prefs = getSharedPreferences(MainActivity.APP_PREFS, MODE_PRIVATE);
+        return userToken = prefs.getString(MainActivity.EMAIL_KEY,null);
+    }
 
 
     private void getDataFromNetWork() {
