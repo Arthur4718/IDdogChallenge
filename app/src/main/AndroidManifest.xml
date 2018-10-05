@@ -21,7 +21,6 @@
             </intent-filter>
         </activity>
         <activity android:name=".model.UserDataModel" />
-        <activity android:name=".model.DogDataModel" />
         <activity
             android:name=".activities.ListActivity"
             android:screenOrientation="portrait"

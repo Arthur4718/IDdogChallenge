@@ -1,13 +1,15 @@
 package devarthur.com.iddog.model;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+public class DogDataModel
+{
 
-public class DogDataModel extends AppCompatActivity {
+    private String imgUrl;
 
-    //TODO handle all dog images from here and create methods to interact with recycler view adapter
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public DogDataModel(String imagUrl) {
+        this.imgUrl = imagUrl;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
     }
 }
