@@ -30,9 +30,7 @@ public class UserDataModel extends AppCompatActivity {
         return mToken;
     }
 
-    public void storeToken(){
 
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

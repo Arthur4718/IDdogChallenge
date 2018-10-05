@@ -20,8 +20,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GalleryActivity" />
-        <activity android:name=".UserDataModel"></activity>
+        <activity android:name=".GalleryController" />
+        <activity android:name=".UserDataModel" />
+        <activity android:name=".DogDataModel"></activity>
     </application>
 
 </manifest>

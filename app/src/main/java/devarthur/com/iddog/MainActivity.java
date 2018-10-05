@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String API_URL = "https://api-iddog.idwall.co/signup";
     public static final String APP_PREFS = "AppPrefs";
     public static final String TOKEN_KEY = "usertoken";
+    public static final String EMAIL_KEY = "user@email";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
                 checkUserEmail();
 
-
             }
         });
-
-
 
     }
 
@@ -72,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
             attempPost();
 
-            Intent openGallery = new Intent(getApplicationContext(), GalleryActivity.class);
+            Intent openGallery = new Intent(getApplicationContext(), GalleryController.class);
             startActivity(openGallery);
 
 
@@ -122,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
     private void storeToken(String token){
         SharedPreferences prefs = getSharedPreferences(APP_PREFS, 0);
         prefs.edit().putString(TOKEN_KEY, token).apply();
+        prefs.edit().putString(EMAIL_KEY,userEmailView.getText().toString()).apply();
 
     }
 
