@@ -19,6 +19,7 @@ public class GalleryController extends AppCompatActivity {
 
     //MemberVariables
     private String userToken;
+    private Button mButton;
 
     //Constants
     private static final String FEED_URL = "https://api-iddog.idwall.co/feed";
@@ -42,7 +43,7 @@ public class GalleryController extends AppCompatActivity {
 
         AsyncHttpClient client = new AsyncHttpClient();
         RequestParams params = new RequestParams();
-        //client.setBasicAuth(restoreEmail(), restoreToken());
+
         client.addHeader("Content-Type", "application/json");
         client.addHeader("Authorization", restoreToken());
         params.put("category", "hound");
@@ -53,6 +54,7 @@ public class GalleryController extends AppCompatActivity {
                 super.onSuccess(statusCode, headers, response);
                 Log.d("Data", "onSucess " + response.toString());
                 Log.d("Data", "status code " + String.valueOf(statusCode));
+                Log.d("Data", "token: " + restoreToken());
 
 
             }
@@ -62,6 +64,7 @@ public class GalleryController extends AppCompatActivity {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
                 Log.e("Data", "" + errorResponse.toString());
                 Log.e("Data", "status code " + String.valueOf(statusCode));
+                Log.e("Data", "token: " + restoreToken());
 
             }
         });
