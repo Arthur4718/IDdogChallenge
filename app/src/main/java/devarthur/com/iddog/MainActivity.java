@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String API_URL = "https://api-iddog.idwall.co/signup";
     public static final String APP_PREFS = "AppPrefs";
     public static final String TOKEN_KEY = "usertoken";
-    public static final String EMAIL_KEY = "user@email";
+    public static final String EMAIL_KEY = "useremail";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +70,10 @@ public class MainActivity extends AppCompatActivity {
 
             attempPost();
 
-            Intent openGallery = new Intent(getApplicationContext(), GalleryController.class);
-            startActivity(openGallery);
+            //TODO this method has to be called only when the POST method is a sucesss
+            //TODO We have to check if the user INTERNET is really on, and give a timeout message if not
+            Intent listIntent = new Intent(getApplicationContext(), ListActivity.class);
+            startActivity(listIntent);
 
 
         }

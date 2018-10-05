@@ -10,5 +10,12 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
+    <string name="itemMenuHusky">Husky</string>
+    <string name="itemMenuHound">Hound</string>
+    <string name="itemMenuPug">Pug</string>
+    <string name="itemMenuLabrador">Labrador</string>
+
+    <string name="headerTitleText">User Logged as: </string>
+
 
 </resources>
