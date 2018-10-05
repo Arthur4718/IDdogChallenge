@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="spinnerItems">
+        <item>husky</item>
+        <item>hound</item>
+        <item>pug</item>
+        <item>labrador</item>
+    </string-array>
+</resources>

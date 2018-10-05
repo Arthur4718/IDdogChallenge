@@ -1,29 +1,25 @@
-package devarthur.com.iddog;
+package devarthur.com.iddog.activities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.content.Intent;
 import android.widget.AutoCompleteTextView;
 import android.support.v7.app.AlertDialog;
 import com.loopj.android.http.*;
 import cz.msebera.android.httpclient.Header;
 import android.widget.Button;
+import android.content.SharedPreferences;
 
-import cz.msebera.android.httpclient.HttpEntity;
-import cz.msebera.android.httpclient.HttpResponse;
-import cz.msebera.android.httpclient.client.ClientProtocolException;
-import cz.msebera.android.httpclient.client.ResponseHandler;
+
 import cz.msebera.android.httpclient.entity.*;
+import devarthur.com.iddog.R;
+import devarthur.com.iddog.model.UserDataModel;
+
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.io.InputStream;
-import java.io.ByteArrayInputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
-import java.io.IOException;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -33,8 +29,10 @@ public class MainActivity extends AppCompatActivity {
     private Button signInButton;
 
     //Constants
-    //Todo add any contast like api url , token and etc around here
-
+    private static final String API_URL = "https://api-iddog.idwall.co/signup";
+    public static final String APP_PREFS = "AppPrefs";
+    public static final String TOKEN_KEY = "usertoken";
+    public static final String EMAIL_KEY = "useremail";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,11 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
                 checkUserEmail();
 
-
             }
         });
-
-
 
     }
 
@@ -78,8 +73,10 @@ public class MainActivity extends AppCompatActivity {
 
             attempPost();
 
-            //Intent openGallery = new Intent(getApplicationContext(), GalleryActivity.class);
-            //startActivity(openGallery);
+            //TODO this method has to be called only when the POST method is a sucesss
+            //TODO We have to check if the user INTERNET is really on, and give a timeout message if not
+            Intent listIntent = new Intent(getApplicationContext(), ListActivity.class);
+            startActivity(listIntent);
 
 
         }
@@ -88,66 +85,60 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void attempPost() {
-
-        AsyncHttpClient client = new AsyncHttpClient();
-        RequestParams params = new RequestParams();
-
-
-        String url = "https://api-iddog.idwall.co/signup";
         String userEmail = userEmailView.getText().toString();
 
+        AsyncHttpClient client = new AsyncHttpClient();
         JSONObject jsonParams = new JSONObject();
         try {
             jsonParams.put("email", userEmail);
         } catch (JSONException e) {
             e.printStackTrace();
-
-
         }
 
         ByteArrayEntity be = new ByteArrayEntity(jsonParams.toString().getBytes());
 
+        client.post(getApplicationContext(), API_URL, be, "application/json", new JsonHttpResponseHandler() {
 
-        client.post(getApplicationContext(), url, be, "application/json", new AsyncHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.d("Dog", "onSucess" + responseBody.toString());
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+
+                Log.d("Dog", "onSucess " + response.toString());
                 Log.d("Dog", "status code " + String.valueOf(statusCode));
 
-                //TODO if the POST is successful, store the token locally. Shared prefereences
-
-                //TODO open the next screen
-
-
+                UserDataModel userData = UserDataModel.fromJson(response);
+                storeToken(userData.getmToken());
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.e("Dog", "" + error.toString());
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+                Log.e("Dog", "" + errorResponse.toString());
                 Log.e("Dog", "status code " + String.valueOf(statusCode));
+                showErrorDialog("Failed Request. Check your Connection");
             }
+
         });
 
     }
 
-    private boolean isEmailValid(String email){
+    private void storeToken(String token){
+        SharedPreferences prefs = getSharedPreferences(APP_PREFS, 0);
+        prefs.edit().putString(TOKEN_KEY, token).apply();
+        prefs.edit().putString(EMAIL_KEY,userEmailView.getText().toString()).apply();
 
+    }
+
+    private boolean isEmailValid(String email){
         return email.contains("@");
     }
 
-
-
-
-    //Show a simple alert if something went wrong with the connnection to firebase.
-    private void showErrorDialog(String message){
-
+    public void showErrorDialog(String message){
         new AlertDialog.Builder(this)
                 .setTitle("Error")
                 .setMessage(message)
                 .setPositiveButton(android.R.string.ok, null)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
-
     }
-
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_husky"
+            android:icon="@drawable/ic_pets_black_24dp"
+            android:title="@string/itemMenuHusky" />
+        <item
+            android:id="@+id/nav_hound"
+            android:icon="@drawable/ic_pets_black_24dp"
+            android:title="@string/itemMenuHound" />
+        <item
+            android:id="@+id/nav_pug"
+            android:icon="@drawable/ic_pets_black_24dp"
+            android:title="@string/itemMenuPug" />
+        <item
+            android:id="@+id/nav_labrador"
+            android:icon="@drawable/ic_pets_black_24dp"
+            android:title="@string/itemMenuLabrador" />
+    </group>
+
+
+
+</menu>
