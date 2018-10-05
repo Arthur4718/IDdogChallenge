@@ -129,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
         return email.contains("@");
     }
 
-    private void showErrorDialog(String message){
+    public void showErrorDialog(String message){
         new AlertDialog.Builder(this)
                 .setTitle("Error")
                 .setMessage(message)
