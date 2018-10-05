@@ -1,4 +1,4 @@
-package devarthur.com.iddog;
+package devarthur.com.iddog.activities;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +15,9 @@ import android.content.SharedPreferences;
 
 
 import cz.msebera.android.httpclient.entity.*;
+import devarthur.com.iddog.R;
+import devarthur.com.iddog.model.UserDataModel;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

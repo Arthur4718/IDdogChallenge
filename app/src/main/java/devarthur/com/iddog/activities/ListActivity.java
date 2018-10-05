@@ -1,9 +1,7 @@
-package devarthur.com.iddog;
+package devarthur.com.iddog.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -24,6 +22,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONObject;
 
 import cz.msebera.android.httpclient.Header;
+import devarthur.com.iddog.R;
 
 
 public class ListActivity extends AppCompatActivity
@@ -147,7 +146,7 @@ public class ListActivity extends AppCompatActivity
 
         if (id == R.id.nav_husky)
         {
-            //TODO create a method to querry for each category and send the images to Recycler View Adapter
+
             getDataFromNetWork("husky");
         }
         else if (id == R.id.nav_hound)
