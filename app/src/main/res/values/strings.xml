@@ -17,5 +17,10 @@
 
     <string name="headerTitleText">User Logged as: </string>
 
+    <string name="requestFailure">Request Failed. Please check your connection</string>
+    <string name="blankEmailtext">Please type your email.</string>
+    <string name="invalidEmailText">Your email address is not valid</string>
+
+
 
 </resources>

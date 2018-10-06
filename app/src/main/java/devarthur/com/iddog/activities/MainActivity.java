@@ -50,19 +50,21 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
     }
-
     private void checkUserEmail(){
         String email = userEmailView.getText().toString();
 
         if(TextUtils.isEmpty(email))
         {
-            Utilities.showMessageDialog("Please type your email", getApplicationContext());
+            Utilities.showMessageDialog(
+                    getApplicationContext().getString(R.string.blankEmailtext),
+                    getApplicationContext());
         }
         else if(!isEmailValid(email))
         {
-            Utilities.showMessageDialog("Your email address is not valid", getApplicationContext());
+            Utilities.showMessageDialog(
+                    getApplicationContext().getString(R.string.invalidEmailText),
+                    getApplicationContext());
         }else{
 
             attempPost();
@@ -70,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
     private void attempPost() {
         String userEmail = userEmailView.getText().toString();
 
@@ -98,27 +99,24 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
 
-                Utilities.showMessageDialog("Failed Request, Please check your connection", getApplicationContext());
+                Utilities.showMessageDialog(
+                        getApplicationContext().getString(R.string.requestFailure),
+                        getApplicationContext());
             }
-
             @Override
             public void onProgress(long bytesWritten, long totalSize) {
                 super.onProgress(bytesWritten, totalSize);
             }
         });
     }
-
     private void storeToken(String token){
         SharedPreferences prefs = getSharedPreferences(APP_PREFS, 0);
         prefs.edit().putString(TOKEN_KEY, token).apply();
         prefs.edit().putString(EMAIL_KEY,userEmailView.getText().toString()).apply();
-
     }
-
     private boolean isEmailValid(String email){
         return email.contains("@");
     }
-
 
     private void openListActivity(){
         Intent listIntent = new Intent(getApplicationContext(), ListActivity.class);

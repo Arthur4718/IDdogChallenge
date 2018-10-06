@@ -72,9 +72,6 @@ public class ListActivity extends AppCompatActivity
         //Holds all data models in a Array List
         lsdogPhoto = new ArrayList<>();
 
-
-
-
     }
 
     private void getDataFromNetWork(String dogCategory) {
@@ -195,7 +192,5 @@ public class ListActivity extends AppCompatActivity
         SharedPreferences prefs = getSharedPreferences(MainActivity.APP_PREFS, MODE_PRIVATE);
         return userToken = prefs.getString(MainActivity.EMAIL_KEY,null);
     }
-
-
 
 }
