@@ -9,6 +9,7 @@ import android.content.Context;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
@@ -46,6 +47,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(mViewHolder holder, int position) {
+        holder.txtImageDisplay.setText("Asset: ");
+
+        Glide.with(mContext).load(mData.get(position).getImgUrl()).apply(mOptions).into(holder.img_data);
 
     }
 

@@ -2,6 +2,8 @@ package devarthur.com.iddog.activities;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -19,10 +21,16 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import cz.msebera.android.httpclient.Header;
 import devarthur.com.iddog.R;
+import devarthur.com.iddog.adapters.RecyclerViewAdapter;
+import devarthur.com.iddog.model.DogDataModel;
 
 
 public class ListActivity extends AppCompatActivity
@@ -32,6 +40,9 @@ public class ListActivity extends AppCompatActivity
     private String userToken;
     private Button mButton;
     private TextView displayUserEmail;
+    private List<DogDataModel> lsdogPhoto;
+    private RecyclerView mRecyclerView;
+
 
     //Constants
     private static final String FEED_URL = "https://api-iddog.idwall.co/feed";
@@ -56,6 +67,12 @@ public class ListActivity extends AppCompatActivity
 
         TextView displayUserEmail = (TextView) headerView.findViewById(R.id.userEmailTextView);
         displayUserEmail.setText(restoreEmail());
+
+        mRecyclerView = findViewById(R.id.my_recycler_view);
+        //Holds all data models in a Array List
+        lsdogPhoto = new ArrayList<>();
+
+
 
 
     }
@@ -84,13 +101,34 @@ public class ListActivity extends AppCompatActivity
 
         client.get(FEED_URL,params, new JsonHttpResponseHandler() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response)
+            {
                 super.onSuccess(statusCode, headers, response);
                 Log.d("Data", "onSucess " + response.toString());
                 Log.d("Data", "status code " + String.valueOf(statusCode));
                 Log.d("Data", "token: " + restoreToken());
 
+                //TODO apply this logic in a class
+                for(int i = 0; i < 10; i ++)
+                {
+                    DogDataModel dogPhoto = new DogDataModel();
+                    try {
+                        dogPhoto.setImgUrl(response.getJSONArray("list").getString(i));
+                        lsdogPhoto.add(dogPhoto);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                feedRecyclerView(lsdogPhoto);
 
+            }
+
+            private void feedRecyclerView(List<DogDataModel> lsdogPhoto) {
+                RecyclerViewAdapter myRecyclerViewAdapter = new RecyclerViewAdapter(getApplicationContext(), lsdogPhoto);
+                mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                mRecyclerView.setAdapter(myRecyclerViewAdapter);
+
+               
             }
 
             @Override
@@ -151,7 +189,8 @@ public class ListActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_hound)
         {
-            getDataFromNetWork("hound");
+            //getDataFromNetWork("hound");
+
         }
         else if (id == R.id.nav_pug)
         {
