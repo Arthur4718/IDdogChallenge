@@ -77,19 +77,6 @@ public class ListActivity extends AppCompatActivity
 
     }
 
-    private String restoreToken() {
-        SharedPreferences prefs = getSharedPreferences(MainActivity.APP_PREFS, MODE_PRIVATE);
-        return userToken = prefs.getString(MainActivity.TOKEN_KEY,null);
-    }
-
-    private String restoreEmail()
-    {
-
-        SharedPreferences prefs = getSharedPreferences(MainActivity.APP_PREFS, MODE_PRIVATE);
-        return userToken = prefs.getString(MainActivity.EMAIL_KEY,null);
-    }
-
-
     private void getDataFromNetWork(String dogCategory) {
 
         AsyncHttpClient client = new AsyncHttpClient();
@@ -104,9 +91,6 @@ public class ListActivity extends AppCompatActivity
             public void onSuccess(int statusCode, Header[] headers, JSONObject response)
             {
                 super.onSuccess(statusCode, headers, response);
-                Log.d("Data", "onSucess " + response.toString());
-                Log.d("Data", "status code " + String.valueOf(statusCode));
-                Log.d("Data", "token: " + restoreToken());
 
                 //TODO apply this logic in a class
                 for(int i = 0; i < 10; i ++)
@@ -128,15 +112,12 @@ public class ListActivity extends AppCompatActivity
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 mRecyclerView.setAdapter(myRecyclerViewAdapter);
 
-               
+
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.e("Data", "" + errorResponse.toString());
-                Log.e("Data", "status code " + String.valueOf(statusCode));
-                Log.e("Data", "token: " + restoreToken());
 
             }
         });
@@ -151,9 +132,6 @@ public class ListActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -181,6 +159,7 @@ public class ListActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        //TODO REMOVE IMAGES when a new querry is called
 
         if (id == R.id.nav_husky)
         {
@@ -189,7 +168,7 @@ public class ListActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_hound)
         {
-            //getDataFromNetWork("hound");
+            getDataFromNetWork("hound");
 
         }
         else if (id == R.id.nav_pug)
@@ -198,11 +177,25 @@ public class ListActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_labrador)
         {
-            getDataFromNetWork("husky");
+            getDataFromNetWork("labrador");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    private String restoreToken() {
+        SharedPreferences prefs = getSharedPreferences(MainActivity.APP_PREFS, MODE_PRIVATE);
+        return userToken = prefs.getString(MainActivity.TOKEN_KEY,null);
+    }
+
+    private String restoreEmail()
+    {
+        SharedPreferences prefs = getSharedPreferences(MainActivity.APP_PREFS, MODE_PRIVATE);
+        return userToken = prefs.getString(MainActivity.EMAIL_KEY,null);
+    }
+
+
+
 }

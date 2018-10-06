@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +16,7 @@ import android.content.SharedPreferences;
 import cz.msebera.android.httpclient.entity.*;
 import devarthur.com.iddog.R;
 import devarthur.com.iddog.model.UserDataModel;
+import devarthur.com.iddog.utilities.Utilities;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,9 +39,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         userEmailView = (AutoCompleteTextView) findViewById(R.id.register_email);
-        //TODO Add an event to check for hover status. Black bg with white text when hovering, and White bg with black text when not
         signInButton = (Button) findViewById(R.id.signInButton);
 
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -58,29 +56,18 @@ public class MainActivity extends AppCompatActivity {
     private void checkUserEmail(){
         String email = userEmailView.getText().toString();
 
-        if(TextUtils.isEmpty(email)){
-
-            Log.d("Dog", "Empty email input");
-            showErrorDialog("Please type your e-mail");
-        }else if(!isEmailValid(email)){
-
-            Log.d("Dog", "Invalid email string");
-            showErrorDialog("Your email address is not valid");
-
+        if(TextUtils.isEmpty(email))
+        {
+            Utilities.showMessageDialog("Please type your email", getApplicationContext());
+        }
+        else if(!isEmailValid(email))
+        {
+            Utilities.showMessageDialog("Your email address is not valid", getApplicationContext());
         }else{
 
-            Log.d("Dog", "Email valid");
-
             attempPost();
-
-            //TODO this method has to be called only when the POST method is a sucesss
             //TODO We have to check if the user INTERNET is really on, and give a timeout message if not
-            Intent listIntent = new Intent(getApplicationContext(), ListActivity.class);
-            startActivity(listIntent);
-
-
         }
-
 
     }
 
@@ -97,29 +84,28 @@ public class MainActivity extends AppCompatActivity {
 
         ByteArrayEntity be = new ByteArrayEntity(jsonParams.toString().getBytes());
 
-        client.post(getApplicationContext(), API_URL, be, "application/json", new JsonHttpResponseHandler() {
+        client.post(getApplicationContext(), API_URL, be, ContentType.APPLICATION_JSON.getMimeType(), new JsonHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 super.onSuccess(statusCode, headers, response);
 
-                Log.d("Dog", "onSucess " + response.toString());
-                Log.d("Dog", "status code " + String.valueOf(statusCode));
-
                 UserDataModel userData = UserDataModel.fromJson(response);
                 storeToken(userData.getmToken());
+                openListActivity();
             }
-
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
-                Log.e("Dog", "" + errorResponse.toString());
-                Log.e("Dog", "status code " + String.valueOf(statusCode));
-                showErrorDialog("Failed Request. Check your Connection");
+
+                Utilities.showMessageDialog("Failed Request, Please check your connection", getApplicationContext());
             }
 
+            @Override
+            public void onProgress(long bytesWritten, long totalSize) {
+                super.onProgress(bytesWritten, totalSize);
+            }
         });
-
     }
 
     private void storeToken(String token){
@@ -133,12 +119,9 @@ public class MainActivity extends AppCompatActivity {
         return email.contains("@");
     }
 
-    public void showErrorDialog(String message){
-        new AlertDialog.Builder(this)
-                .setTitle("Error")
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+
+    private void openListActivity(){
+        Intent listIntent = new Intent(getApplicationContext(), ListActivity.class);
+        startActivity(listIntent);
     }
 }

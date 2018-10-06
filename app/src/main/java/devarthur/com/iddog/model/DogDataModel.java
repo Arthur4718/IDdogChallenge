@@ -1,5 +1,10 @@
 package devarthur.com.iddog.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import devarthur.com.iddog.adapters.RecyclerViewAdapter;
+
 public class DogDataModel
 {
 
@@ -19,4 +24,10 @@ public class DogDataModel
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
     }
+
+    public static void clearData(List<ArrayList> dataList, RecyclerViewAdapter mAdapter){
+        dataList.clear();
+        mAdapter.notifyDataSetChanged();
+    }
+
 }
