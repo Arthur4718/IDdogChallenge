@@ -9,6 +9,8 @@ import android.content.Context;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestOptions;
+
 import java.util.List;
 
 
@@ -20,11 +22,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     private Context mContext;
     private List<DogDataModel> mData;
+    //Glide member variable
+    RequestOptions mOptions;
 
 
     public RecyclerViewAdapter(Context context, List<DogDataModel> data) {
         mContext = context;
         mData = data;
+
+
+        //Set option for glide.Image place holder for loading images and place holder for erros 
+        mOptions = new RequestOptions().centerCrop().placeholder(R.drawable.ic_pets_black_24dp).error(R.drawable.ic_error_black_24dp);
     }
 
     @Override
