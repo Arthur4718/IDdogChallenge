@@ -8,6 +8,7 @@
     >
 
     <TextView
+        android:id="@+id/imageUrl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Image"
@@ -16,6 +17,7 @@
         android:textAlignment="center"
         />
     <ImageView
+        android:id="@+id/imgContentViewItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#fff"
