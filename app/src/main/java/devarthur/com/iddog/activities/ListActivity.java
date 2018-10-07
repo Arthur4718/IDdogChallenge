@@ -30,6 +30,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import devarthur.com.iddog.R;
 import devarthur.com.iddog.adapters.RecyclerViewAdapter;
+
 import devarthur.com.iddog.model.DogDataModel;
 
 
@@ -90,7 +91,7 @@ public class ListActivity extends AppCompatActivity
                 super.onSuccess(statusCode, headers, response);
 
                 //TODO apply this logic in a class
-                for(int i = 0; i < 10; i ++)
+                for(int i = 0; i < 20; i ++)
                 {
                     DogDataModel dogPhoto = new DogDataModel();
                     try {
@@ -108,6 +109,8 @@ public class ListActivity extends AppCompatActivity
                 RecyclerViewAdapter myRecyclerViewAdapter = new RecyclerViewAdapter(getApplicationContext(), lsdogPhoto);
                 mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
                 mRecyclerView.setAdapter(myRecyclerViewAdapter);
+
+
 
 
             }

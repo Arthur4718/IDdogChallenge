@@ -10,11 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
-
-
 import devarthur.com.iddog.model.DogDataModel;
 import devarthur.com.iddog.R;
 
@@ -24,7 +23,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Context mContext;
     private List<DogDataModel> mData;
     //Glide member variable
-    RequestOptions mOptions;
+    private RequestOptions mOptions;
 
 
     public RecyclerViewAdapter(Context context, List<DogDataModel> data) {
@@ -33,7 +32,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
         //Set option for glide.Image place holder for loading images and place holder for erros 
-        mOptions = new RequestOptions().centerCrop().placeholder(R.drawable.ic_pets_black_24dp).error(R.drawable.ic_error_black_24dp);
+        mOptions = new RequestOptions()
+                .centerInside()
+                .placeholder(R.drawable.ic_pets_black_24dp)
+                .error(R.drawable.ic_error_black_24dp)
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
+
     }
 
     @Override
@@ -49,7 +53,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(mViewHolder holder, int position) {
         holder.txtImageDisplay.setText("Asset: ");
 
-        Glide.with(mContext).load(mData.get(position).getImgUrl()).apply(mOptions).into(holder.img_data);
+        Glide
+                .with(mContext)
+                .load(mData.get(position).getImgUrl())
+                .apply(mOptions)
+                .into(holder.img_data);
+
+
+
+    }
+
+    public static void removeAllImagesFromCache(){
 
     }
 

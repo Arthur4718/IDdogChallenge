@@ -1,12 +1,13 @@
 package devarthur.com.iddog.activities;
 
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
-import android.support.v7.app.AlertDialog;
+
 import com.loopj.android.http.*;
 import cz.msebera.android.httpclient.Header;
 import android.widget.Button;
@@ -16,7 +17,7 @@ import android.content.SharedPreferences;
 import cz.msebera.android.httpclient.entity.*;
 import devarthur.com.iddog.R;
 import devarthur.com.iddog.model.UserDataModel;
-import devarthur.com.iddog.utilities.Utilities;
+
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         userEmailView = (AutoCompleteTextView) findViewById(R.id.register_email);
         signInButton = (Button) findViewById(R.id.signInButton);
 
@@ -56,19 +59,15 @@ public class MainActivity extends AppCompatActivity {
 
         if(TextUtils.isEmpty(email))
         {
-            Utilities.showMessageDialog(
-                    getApplicationContext().getString(R.string.blankEmailtext),
-                    getApplicationContext());
+            showErrorDialog("vazio");
         }
         else if(!isEmailValid(email))
         {
-            Utilities.showMessageDialog(
-                    getApplicationContext().getString(R.string.invalidEmailText),
-                    getApplicationContext());
+            showErrorDialog(getString(R.string.invalidEmailText));
         }else{
 
             attempPost();
-            //TODO We have to check if the user INTERNET is really on, and give a timeout message if not
+            //  TODO We have to check if the user INTERNET is really on, and give a timeout message if not
         }
 
     }
@@ -99,9 +98,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
 
-                Utilities.showMessageDialog(
-                        getApplicationContext().getString(R.string.requestFailure),
-                        getApplicationContext());
+
             }
             @Override
             public void onProgress(long bytesWritten, long totalSize) {
@@ -121,5 +118,14 @@ public class MainActivity extends AppCompatActivity {
     private void openListActivity(){
         Intent listIntent = new Intent(getApplicationContext(), ListActivity.class);
         startActivity(listIntent);
+    }
+
+    public void showErrorDialog(String message){
+        new AlertDialog.Builder(getApplicationContext())
+                .setTitle("Error")
+                .setMessage(message)
+                .setPositiveButton(android.R.string.ok, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }
