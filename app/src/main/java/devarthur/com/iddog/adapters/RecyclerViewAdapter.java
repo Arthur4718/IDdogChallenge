@@ -1,6 +1,7 @@
 package devarthur.com.iddog.adapters;
 
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,7 +52,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(mViewHolder holder, int position) {
-        holder.txtImageDisplay.setText("Asset: ");
+        holder.txtImageDisplay.setText("Image: " + String.valueOf(position));
 
         Glide
                 .with(mContext)
@@ -59,13 +60,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .apply(mOptions)
                 .into(holder.img_data);
 
-
-
     }
 
-    public static void removeAllImagesFromCache(){
-
+    @Override
+    public void onViewDetachedFromWindow(@NonNull mViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
     }
+
+
 
     @Override
     public int getItemCount() {

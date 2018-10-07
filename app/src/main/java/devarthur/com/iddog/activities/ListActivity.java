@@ -17,6 +17,9 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -43,7 +46,10 @@ public class ListActivity extends AppCompatActivity
     private TextView displayUserEmail;
     private List<DogDataModel> lsdogPhoto;
     private RecyclerView mRecyclerView;
-
+    private RecyclerViewAdapter myRecyclerViewAdapter;
+    public int dataLength;
+    public String nextCategory;
+    private RequestOptions mOptions;
 
     //Constants
     private static final String FEED_URL = "https://api-iddog.idwall.co/feed";
@@ -70,8 +76,13 @@ public class ListActivity extends AppCompatActivity
         displayUserEmail.setText(restoreEmail());
 
         mRecyclerView = findViewById(R.id.my_recycler_view);
+
         //Holds all data models in a Array List
         lsdogPhoto = new ArrayList<>();
+        //Load the first gallery
+
+        getDataFromNetWork("husky");
+
 
     }
 
@@ -84,36 +95,48 @@ public class ListActivity extends AppCompatActivity
         client.addHeader("Authorization", restoreToken());
         params.put("category", dogCategory);
 
+
+
         client.get(FEED_URL,params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response)
             {
                 super.onSuccess(statusCode, headers, response);
 
-                //TODO apply this logic in a class
-                for(int i = 0; i < 20; i ++)
+                if(lsdogPhoto.size() == 0)
                 {
-                    DogDataModel dogPhoto = new DogDataModel();
                     try {
-                        dogPhoto.setImgUrl(response.getJSONArray("list").getString(i));
-                        lsdogPhoto.add(dogPhoto);
+                        //A little code to get all the images from the list
+                        dataLength = response.getJSONArray("list").length();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
+
+                    for(int i = 0; i < 5; i ++)
+                    {
+                        DogDataModel dogPhoto = new DogDataModel();
+                        try {
+                            dogPhoto.setImgUrl(response.getJSONArray("list").getString(i));
+                            lsdogPhoto.add(dogPhoto);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    feedRecyclerView(lsdogPhoto);
+
                 }
-                feedRecyclerView(lsdogPhoto);
-
-            }
-
-            private void feedRecyclerView(List<DogDataModel> lsdogPhoto) {
-                RecyclerViewAdapter myRecyclerViewAdapter = new RecyclerViewAdapter(getApplicationContext(), lsdogPhoto);
-                mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                mRecyclerView.setAdapter(myRecyclerViewAdapter);
+                else{
+                    lsdogPhoto.clear();
+                    mRecyclerView.removeAllViewsInLayout();
+                    getDataFromNetWork(nextCategory);
 
 
+                }
 
 
             }
+
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
@@ -122,6 +145,12 @@ public class ListActivity extends AppCompatActivity
             }
         });
     }
+    private void feedRecyclerView(List<DogDataModel> lsdogPhoto) {
+        RecyclerViewAdapter myRecyclerViewAdapter = new RecyclerViewAdapter(getApplicationContext(), lsdogPhoto);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+        mRecyclerView.setAdapter(myRecyclerViewAdapter);
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -163,21 +192,24 @@ public class ListActivity extends AppCompatActivity
 
         if (id == R.id.nav_husky)
         {
-
             getDataFromNetWork("husky");
+            nextCategory = "husky";
         }
         else if (id == R.id.nav_hound)
         {
             getDataFromNetWork("hound");
+            nextCategory = "hound";
 
         }
         else if (id == R.id.nav_pug)
         {
             getDataFromNetWork("pug");
+            nextCategory = "pug";
         }
         else if (id == R.id.nav_labrador)
         {
             getDataFromNetWork("labrador");
+            nextCategory = "labrador";
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -195,5 +227,6 @@ public class ListActivity extends AppCompatActivity
         SharedPreferences prefs = getSharedPreferences(MainActivity.APP_PREFS, MODE_PRIVATE);
         return userToken = prefs.getString(MainActivity.EMAIL_KEY,null);
     }
+
 
 }

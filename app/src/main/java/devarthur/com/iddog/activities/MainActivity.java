@@ -5,6 +5,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 
@@ -12,6 +13,7 @@ import com.loopj.android.http.*;
 import cz.msebera.android.httpclient.Header;
 import android.widget.Button;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 
 import cz.msebera.android.httpclient.entity.*;
@@ -59,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(TextUtils.isEmpty(email))
         {
-            showErrorDialog("vazio");
+            showErrorDialog(getString(R.string.blankEmailtext));
         }
         else if(!isEmailValid(email))
         {
@@ -98,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 super.onFailure(statusCode, headers, throwable, errorResponse);
 
+                showErrorDialog(getString(R.string.invalidEmailText));
 
             }
             @Override
@@ -120,12 +123,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(listIntent);
     }
 
-    public void showErrorDialog(String message){
-        new AlertDialog.Builder(getApplicationContext())
-                .setTitle("Error")
-                .setMessage(message)
-                .setPositiveButton(android.R.string.ok, null)
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
+    private void showErrorDialog(String message){
+
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 }
