@@ -1,6 +1,7 @@
 package devarthur.com.iddog.adapters;
 
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,6 +16,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
+
+import devarthur.com.iddog.activities.ImageDetail;
 import devarthur.com.iddog.model.DogDataModel;
 import devarthur.com.iddog.R;
 
@@ -51,7 +54,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onBindViewHolder(mViewHolder holder, int position) {
+    public void onBindViewHolder(mViewHolder holder, final int position) {
         holder.txtImageDisplay.setText("Image: " + String.valueOf(position));
 
         Glide
@@ -59,6 +62,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
                 .load(mData.get(position).getImgUrl())
                 .apply(mOptions)
                 .into(holder.img_data);
+
+        holder.img_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, ImageDetail.class);
+                intent.putExtra("extraImageText", String.valueOf(position));
+                intent.putExtra("extraUrl",mData.get(position).getImgUrl());
+                mContext.startActivity(intent);
+            }
+        });
 
     }
 
