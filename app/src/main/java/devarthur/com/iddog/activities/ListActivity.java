@@ -113,7 +113,7 @@ public class ListActivity extends AppCompatActivity
                     }
 
 
-                    for(int i = 0; i < 5; i ++)
+                    for(int i = 0; i < dataLength; i ++)
                     {
                         DogDataModel dogPhoto = new DogDataModel();
                         try {
