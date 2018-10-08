@@ -27,6 +27,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     private Context mContext;
     private List<DogDataModel> mData;
     //Glide member variable
+    //Sets glide behavior and rules like diskCache
     private RequestOptions mOptions;
 
 
@@ -76,13 +77,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     @Override
-    public void onViewDetachedFromWindow(@NonNull mViewHolder holder) {
-        super.onViewDetachedFromWindow(holder);
-    }
-
-
-
-    @Override
     public int getItemCount() {
         return mData.size();
     }
@@ -98,7 +92,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             txtImageDisplay = itemView.findViewById(R.id.imageUrl);
             img_data = itemView.findViewById(R.id.imgContentViewItem);
         }
-
 
     }
 

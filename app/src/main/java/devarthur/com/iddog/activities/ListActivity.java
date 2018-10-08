@@ -93,23 +93,22 @@ public class ListActivity extends AppCompatActivity
         client.addHeader("Authorization", restoreToken());
         params.put("category", dogCategory);
 
-
-
         client.get(FEED_URL,params, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response)
             {
                 super.onSuccess(statusCode, headers, response);
 
+                //If the list is empty, then we can add images to it
+                //Otherwise its time to refresh
                 if(lsdogPhoto.size() == 0)
                 {
                     try {
-                        //A little code to get all the images from the list
+                        //Store the total value of images in the json response to
                         dataLength = response.getJSONArray("list").length();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
 
                     for(int i = 0; i < dataLength; i ++)
                     {
@@ -189,12 +188,12 @@ public class ListActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        //TODO REMOVE IMAGES when a new querry is called
+
 
         if (id == R.id.nav_husky)
         {
             getDataFromNetWork("husky");
-            //Keep track of category so getdatafromnetwork can be called again to refresh the list
+            //Keep track of category so getDataFromNetwork can be called again to refresh the list
             currentCategory = "husky";
         }
         else if (id == R.id.nav_hound)

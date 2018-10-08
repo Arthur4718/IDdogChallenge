@@ -65,7 +65,6 @@ public class ImageDetail extends AppCompatActivity {
     @Override
     protected void onDestroy() {
 
-        Log.d("Dog", "Activity Destroyed");
         //Remove images from glide cache.
         super.onDestroy();
         Intent intent = getIntent();
