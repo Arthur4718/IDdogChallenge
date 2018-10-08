@@ -159,6 +159,7 @@ public class ListActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+            finish();
         }
     }
     @Override
@@ -215,6 +216,16 @@ public class ListActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        lsdogPhoto.clear();
+        mRecyclerView.removeAllViewsInLayout();
+
     }
 
     private String restoreToken() {

@@ -8,4 +8,6 @@
 
     <dimen name="iconHeight">66dp</dimen>
     <dimen  name="iconWidth">165dp</dimen>
+
+    <dimen name="imagePromptSize">20sp</dimen>
 </resources>
