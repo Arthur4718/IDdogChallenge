@@ -17,10 +17,10 @@ you can get in touch with me at devarthur4718@gmail.com
 
 In order to perform all the actions listed above, i used:
 
-Glidev4 - To list and cache images on disk. 
-RecyclerView - List and recycle images on the user display.
-Looopj Asynchronous Http Client - A library based on Apache. 
-MVC pattenrs - In order to better organize and separate View Actions from Data Actions.
+* Glidev4 - To list and cache images on disk. 
+* RecyclerView - List and recycle images on the user display.
+* Looopj Asynchronous Http Client - A library based on Apache. 
+* MVC pattenrs - In order to better organize and separate View Actions from Data Actions.
 
 
 # Glidev4 implementation and usage. 
