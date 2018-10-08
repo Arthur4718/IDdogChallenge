@@ -5,7 +5,7 @@ App created as a challenge from IDwall team.
 This app showcases a list of images to users that can login with a valid e-mail. I will describe some of the libraries that i used
 during development, and also showcasing some examples if you want to get your feet wet with some popular libraries. 
 
-You should be able to grab an apk [here.] (https://drive.google.com/file/d/1dFy22mHxozj0zcRWT4XTbOqpYXZ3aUK7/view?usp=sharing) 
+You should be able to grab an apk   using [GitHub Pages](https://pages.github.com/).
 
 Just run install it normally in your device or emulator. If the Android system promps you if a message warning about the apk. 
 then you should enable its installation by change accepting a security change in your system. Its higly recommended for you to 
