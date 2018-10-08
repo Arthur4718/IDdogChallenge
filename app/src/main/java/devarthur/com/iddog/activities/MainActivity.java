@@ -1,6 +1,8 @@
 package devarthur.com.iddog.activities;
 
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -68,8 +70,14 @@ public class MainActivity extends AppCompatActivity {
             showErrorDialog(getString(R.string.invalidEmailText));
         }else{
 
-            attempPost();
-            //  TODO We have to check if the user INTERNET is really on, and give a timeout message if not
+            if(!userHasConnection()){
+                showErrorDialog(getString(R.string.noConnectionText));
+            }
+            else{
+                attempPost();
+            }
+
+
         }
 
     }
@@ -127,4 +135,18 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
+
+    private boolean userHasConnection(){
+        ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(getApplicationContext().CONNECTIVITY_SERVICE);
+        if(connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED ||
+                connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED) {
+            //we are connected to a network
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
 }
