@@ -18,17 +18,23 @@ MVC pattenrs - In order to better organize and separate View Actions from Data A
 
 # Glidev4 implementation and usage. 
 
+In the Gradle.App document, i added the following implementations. 
+
+'''Java
+  implementation 'com.github.bumptech.glide:glide:4.7.1'
+  // Glide v4 uses this new annotation processor -- see https://bumptech.github.io/glide/doc/generatedapi.html
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.7.1'
+'''
+
+
+# Recyclew View implementation and Usage. 
 
 
 
-#Recyclew View implementation and Usage. 
+# Loopj implementation and usage. 
 
 
 
-#Loopj implementation and usage. 
-
-
-
-#Latest apk build. 
+# Latest apk build. 
 
 
