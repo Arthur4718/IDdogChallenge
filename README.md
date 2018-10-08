@@ -84,7 +84,7 @@ Its very commom to see android tutorials using ListView, but google standard obj
 
 A Recycler view is basically a colection of views. It will use a XML file as your basic item and populate a list with this view. In this project i created simple ImageView and TextView to use as an item. 
 
-
+## Item XML file.
 ```XML
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
@@ -119,11 +119,155 @@ A Recycler view is basically a colection of views. It will use a XML file as you
 
 ```
 
+Then you can add a Recycler view to your Activity. 
+
+```XML
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".activities.ListActivity"
+    tools:showIn="@layout/app_bar_list">
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/my_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>
+
+
+```
+The next step is to set a RecyclerViewAdapter and a DataModel. The adapter is responsible for fedding data from the DataModel to the View. Here is a sample from this project. 
+
+```java
+package devarthur.com.iddog.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import devarthur.com.iddog.adapters.RecyclerViewAdapter;
+
+public class DogDataModel
+{
+
+    private String imgUrl;
+
+    public DogDataModel() {
+    }
+
+    public DogDataModel(String imagUrl) {
+        this.imgUrl = imagUrl;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public static void clearData(List<ArrayList> dataList, RecyclerViewAdapter mAdapter){
+        dataList.clear();
+        mAdapter.notifyDataSetChanged();
+    }
+
+}
+
+
+```
+
+Im not looking forward for a step by step lesson in setting up and Adapter, check the Android documentation for a deeper understading. But basically the adapter is going to connect the DataModel with the View using the OnCreateViewHolder and onBindViewHolder.
+
+```java
+
+@Override
+    public mViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View view;
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        view = inflater.inflate(R.layout.dogimage_row_item, parent, false);
+        return new mViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder(mViewHolder holder, final int position) {
+        holder.txtImageDisplay.setText("Image: " + String.valueOf(position));
+
+        Glide
+                .with(mContext)
+                .load(mData.get(position).getImgUrl())
+                .apply(mOptions)
+                .into(holder.img_data);
+
+
+
+```
+
+
+
 
 # Loopj implementation and usage. 
 
+The api Docs state that an Json object must be passed through POST method, and a JSON object will be received after the user has logged in. The loopj implements a JsonReponseHanlder wich is usefull because we can use the onSucess and OnFailure to prompt the user or get done some actions of our own. 
+
+```java
+  private void attempPost() {
+        String userEmail = userEmailView.getText().toString();
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        JSONObject jsonParams = new JSONObject();
+        try {
+            jsonParams.put("email", userEmail);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        ByteArrayEntity be = new ByteArrayEntity(jsonParams.toString().getBytes());
+
+        client.post(getApplicationContext(), API_URL, be, ContentType.APPLICATION_JSON.getMimeType(), new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+
+                UserDataModel userData = UserDataModel.fromJson(response);
+                storeToken(userData.getmToken());
+                openListActivity();
+            }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                super.onFailure(statusCode, headers, throwable, errorResponse);
+
+                showErrorDialog(getString(R.string.invalidEmailText));
+
+            }
+            @Override
+            public void onProgress(long bytesWritten, long totalSize) {
+                super.onProgress(bytesWritten, totalSize);
+            }
+        });
+    }
 
 
-# Latest apk build. 
+```
+
+
+
+
+
 
 
