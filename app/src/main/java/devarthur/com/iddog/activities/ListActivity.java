@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,7 +17,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -48,7 +46,7 @@ public class ListActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
     private RecyclerViewAdapter myRecyclerViewAdapter;
     public int dataLength;
-    public String nextCategory;
+    public String currentCategory;
     private RequestOptions mOptions;
 
     //Constants
@@ -129,7 +127,9 @@ public class ListActivity extends AppCompatActivity
                 else{
                     lsdogPhoto.clear();
                     mRecyclerView.removeAllViewsInLayout();
-                    getDataFromNetWork(nextCategory);
+                    Glide.get(getApplicationContext()).clearMemory();
+                    //Reload the adapter with new images of the category
+                    getDataFromNetWork(currentCategory);
 
 
                 }
@@ -194,23 +194,24 @@ public class ListActivity extends AppCompatActivity
         if (id == R.id.nav_husky)
         {
             getDataFromNetWork("husky");
-            nextCategory = "husky";
+            //Keep track of category so getdatafromnetwork can be called again to refresh the list
+            currentCategory = "husky";
         }
         else if (id == R.id.nav_hound)
         {
             getDataFromNetWork("hound");
-            nextCategory = "hound";
+            currentCategory = "hound";
 
         }
         else if (id == R.id.nav_pug)
         {
             getDataFromNetWork("pug");
-            nextCategory = "pug";
+            currentCategory = "pug";
         }
         else if (id == R.id.nav_labrador)
         {
             getDataFromNetWork("labrador");
-            nextCategory = "labrador";
+            currentCategory = "labrador";
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -225,6 +226,7 @@ public class ListActivity extends AppCompatActivity
         super.onDestroy();
         lsdogPhoto.clear();
         mRecyclerView.removeAllViewsInLayout();
+        Glide.get(getApplicationContext()).clearMemory();
 
     }
 
